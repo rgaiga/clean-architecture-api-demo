@@ -1,0 +1,26 @@
+services:
+    app:
+        build: ./
+        container_name: app
+        restart: always
+        ports:
+            - 3000:3000
+        environment:
+            SERVER_PORT: 3000
+            BASE_PATH: /api/v1
+            MONGODB_URL: mongodb://mongo:27017/clean-architecture-api
+            HASHER_SALT_ROUNDS: 12
+            ENCRYPTER_PRIVATE_KEY: secret
+
+        depends_on:
+            - mongo
+
+    mongo:
+        image: mongo:7.0.5-jammy
+        container_name: mongo
+        restart: always
+        volumes:
+            - mongo-data:/var/lib/mongo
+
+volumes:
+    mongo-data:
